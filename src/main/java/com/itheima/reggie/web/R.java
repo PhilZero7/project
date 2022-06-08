@@ -13,6 +13,14 @@ public class R<T> {
     private T data;                     //数据
     private Map map = new HashMap();    //动态数据
 
+    public static <T> R<T> success(String msg, T object) {
+        R<T> r = new R<T>();
+        r.msg = msg;
+        r.data = object;
+        r.code = 1;
+        return r;
+    }
+
     public static <T> R<T> success(T object) {
         R<T> r = new R<T>();
         r.data = object;
