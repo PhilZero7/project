@@ -13,6 +13,18 @@ bin-release/
 *.ipa
 *.apk
 
+# other
+*.iml
+.git
+logs
+rebel.xml
+target/
+!.mvn/wrapper/maven-wrapper.jar
+log.path_IS_UNDEFINED
+.DS_Store
+offline_user.md
+*.class
+
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
