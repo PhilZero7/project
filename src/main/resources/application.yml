@@ -20,3 +20,6 @@ mybatis-plus:
     db-config:
       # MybatisPlus 设置全局主键生成策略：雪花算法
       id-type: ASSIGN_ID
+
+# 定义不登录就可以放行的请求，使用Spring提供的AntPathMatcher，支持统配
+urlStr: /backend/**,/front/**,/employee/login,favicon.ico
