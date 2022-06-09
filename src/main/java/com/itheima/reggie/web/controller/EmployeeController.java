@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 
 /**
  * @Author Vsunks.v
@@ -88,6 +89,7 @@ public class EmployeeController {
 
     /**
      * 登出注销
+     *
      * @return 操作的结果
      */
     @PostMapping("/logout")
@@ -99,6 +101,39 @@ public class EmployeeController {
 
         // 响应操作结果
         return R.success("注销成功");
+    }
+
+
+    /**
+     * 保存员工。保存前需要补充数据：修改、创建人和时间，默认status、默认密码
+     * @param employee
+     * @return
+     */
+    @PostMapping
+    public R save(@RequestBody Employee employee) {
+
+        // 1. 对密码进行加密
+        String pwd = DigestUtils.md5DigestAsHex("123456".getBytes());
+        employee.setPassword(pwd);
+
+        // 2. 补全数据（推荐写在service层）
+        employee.setStatus(1);
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
+
+        // 2.1 获取当前登录用户的id
+        Long employeeId = (Long) request.getSession().getAttribute("employee");
+        employee.setCreateUser(employeeId);
+        employee.setUpdateUser(employeeId);
+
+
+        // 3.保存员工
+        boolean saveRsult = employeeService.save(employee);
+        if (saveRsult) {
+            return R.success("新增员工成功");
+        }
+        return R.fail("新增员工失败");
+
     }
 
 }
