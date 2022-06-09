@@ -3,6 +3,7 @@ package com.itheima.reggie.web.controller;
 import com.alibaba.druid.sql.visitor.functions.If;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itheima.reggie.entity.Employee;
 import com.itheima.reggie.entity.dto.LoginDto;
 import com.itheima.reggie.service.EmployeeService;
@@ -11,10 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -106,6 +104,7 @@ public class EmployeeController {
 
     /**
      * 保存员工。保存前需要补充数据：修改、创建人和时间，默认status、默认密码
+     *
      * @param employee
      * @return
      */
@@ -119,6 +118,42 @@ public class EmployeeController {
         }
         return R.fail("新增员工失败");
 
+    }
+
+    /**
+     * 分页条件查询
+     *
+     * @param currentPage    当前页
+     * @param pageSize 页面大小
+     * @param name     查询条件
+     * @return
+     */
+    @GetMapping("/page")
+    public R<Page<Employee>> page(@RequestParam("page") Integer currentPage, Integer pageSize, String name) {
+        log.info("分页查询，查询第{}页，每页{}条，查询条件：{}", currentPage, pageSize, name == null ? "无" : name);
+
+        // 0. 请求参数健壮性判断
+        if (pageSize == null) {
+            pageSize = 2;
+        }
+        if (currentPage == null) {
+            currentPage = 1;
+        }
+        // 1. 组织分页对象
+        Page<Employee> page = new Page<>();
+        page.setCurrent(currentPage);
+        page.setSize(pageSize);
+
+
+        // 2. 调用service分页，会将查询的数据自动存入page对象
+        LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
+        // 2.1 设置查询条件：按照名称模糊查询
+        queryWrapper.like(StringUtils.isNotBlank(name), Employee::getName, name);
+
+        employeeService.page(page, queryWrapper);
+
+        // 3. 组织数据并响应给用户
+        return R.success("查询成功", page);
     }
 
 }

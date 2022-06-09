@@ -3,9 +3,10 @@ package com.itheima.reggie.common;
 import com.itheima.reggie.web.R;
 import com.itheima.reggie.web.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * @Author Vsunks.v
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  * @Description: 全局异常处理类
  */
 @Slf4j
-@Component // 装配进Spring容器
+// @Component // 装配进Spring容器
 // 只处理标有下述注解集合中任一一个的类抛出的异常
 // 某个类如果标注的是@RestController或者是@Controller注解，抛出了异常，我才会处理，否则不处理
 // @RestControllerAdvice = @ControllerAdvice + @ResponeBody

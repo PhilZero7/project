@@ -3,6 +3,9 @@ package com.itheima.reggie.entity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -38,3 +41,4 @@ public class Employee implements Serializable {
     // 更新用户id
     private Long updateUser;
 }
+
