@@ -32,15 +32,19 @@ public class Employee implements Serializable {
     private Integer status;  // 0禁用 1 正常
 
     // 创建时间
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     // 更新时间
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
-    // 创建用户id
+    // 创建时操作人id
+    @TableField(fill = FieldFill.INSERT)
     private Long createUser;
 
-    // 更新用户id
+    // 更新操作人id
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updateUser;
 }
 

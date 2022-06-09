@@ -82,17 +82,17 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
 
         // 2.2. 补全数据时间相关数据
         employee.setStatus(1);
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+        //employee.setCreateTime(LocalDateTime.now());
+        //employee.setUpdateTime(LocalDateTime.now());
 
         // 2.3 获取当前登录用户的id，并填充进employee相应属性
         //Long employeeId = (Long) request.getSession().getAttribute("employee");
 
         // 通过线程容器对象，获取绑定在该线程上的用户id
-        Long employeeId = BaseContextUtil.getCurrentId();
+        /*Long employeeId = BaseContextUtil.getCurrentId();
         System.out.println("service employeeId = " + employeeId);
         employee.setCreateUser(employeeId);
-        employee.setUpdateUser(employeeId);
+        employee.setUpdateUser(employeeId);*/
 
         // 3. 保存用户
         this.save(employee);

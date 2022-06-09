@@ -159,9 +159,13 @@ public class EmployeeController {
         page.setCurrent(currentPage);
         page.setSize(pageSize);
 
-
         // 2. 调用service分页，会将查询的数据自动存入page对象
         LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
+
+        // 按照更新时间排序，倒序
+        queryWrapper.orderByDesc(Employee::getUpdateTime);
+
+
         // 2.1 设置查询条件：按照名称模糊查询
         queryWrapper.like(StringUtils.isNotBlank(name), Employee::getName, name);
 
@@ -205,6 +209,8 @@ public class EmployeeController {
             if (employee.getStatus() != null && (employee.getStatus() != 0 && employee.getStatus() != 1)) {
                 return R.fail("参数有误");
             }
+
+            // TODO 完善更新时间和更新操作人信息。现在不用写了。
             // TODO 自己完成更多安全性的校验
             // 调用service，更新用户。employeeService.updateById是按需修改的
             boolean updateResult = employeeService.updateById(employee);
