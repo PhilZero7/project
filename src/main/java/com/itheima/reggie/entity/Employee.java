@@ -2,6 +2,8 @@ package com.itheima.reggie.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -19,7 +21,7 @@ import java.time.LocalDateTime;
 public class Employee implements Serializable {
     private static final long serialVersionUID = 1L;
     // 该成员变量序列化时，会序列化为String类型
-    // @JsonSerialize(using = ToStringSerializer.class)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     private String username;
     private String name;

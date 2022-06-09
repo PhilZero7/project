@@ -123,13 +123,14 @@ public class EmployeeController {
     /**
      * 分页条件查询
      *
-     * @param currentPage    当前页
-     * @param pageSize 页面大小
-     * @param name     查询条件
+     * @param currentPage 当前页
+     * @param pageSize    页面大小
+     * @param name        查询条件
      * @return
      */
     @GetMapping("/page")
     public R<Page<Employee>> page(@RequestParam("page") Integer currentPage, Integer pageSize, String name) {
+
         log.info("分页查询，查询第{}页，每页{}条，查询条件：{}", currentPage, pageSize, name == null ? "无" : name);
 
         // 0. 请求参数健壮性判断
@@ -154,6 +155,36 @@ public class EmployeeController {
 
         // 3. 组织数据并响应给用户
         return R.success("查询成功", page);
+    }
+
+
+    /**
+     * 修改员工。默认是按需修改
+     *
+     * @param employee
+     * @return
+     */
+    @PutMapping
+    public R update(@RequestBody Employee employee) {
+        log.info("修改员工{}", employee);
+
+        //0. 请求参数健壮性判断
+        if (employee.getId() != null) {
+            // 状态修改参数合理性判断
+            if (employee.getStatus() != null && (employee.getStatus() != 0 && employee.getStatus() != 1)) {
+                return R.fail("参数有误");
+            }
+            // TODO 自己完成更多安全性的校验
+            // 调用service，更新用户。employeeService.updateById是按需修改的
+            boolean updateResult = employeeService.updateById(employee);
+
+            if (updateResult) {
+
+                return R.success("修改成功");
+            }
+            return R.fail("修改失败");
+        }
+        return R.fail("参数有误");
     }
 
 }
