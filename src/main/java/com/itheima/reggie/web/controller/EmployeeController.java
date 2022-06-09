@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itheima.reggie.entity.Employee;
 import com.itheima.reggie.entity.dto.LoginDto;
 import com.itheima.reggie.service.EmployeeService;
+import com.itheima.reggie.utils.BaseContextUtil;
 import com.itheima.reggie.web.R;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -112,10 +113,17 @@ public class EmployeeController {
      */
     @PostMapping
     public R save(@RequestBody Employee employee) {
-        Thread thread = Thread.currentThread();
+        // 验证是否在同一个线程中
+       /* Thread thread = Thread.currentThread();
         String name = thread.getName();
         System.out.println("**********************************");
-        System.out.println("**********Controller-save: name = " + name);
+        System.out.println("**********Controller-save: name = " + name);*/
+
+        // 通过ThreadLocal对象，为当前线程绑定一个值.
+        // 优化：在Filter中，如果确定当前用户已经的登录了之后，为当前线程绑定一个值
+        // Long employeeId = (Long) request.getSession().getAttribute("employee");
+
+        // BaseContextUtil.setCurrentId(employeeId);
 
         // 3.保存员工
         boolean saveRsult = employeeService.saveWithCheckUserName(employee);

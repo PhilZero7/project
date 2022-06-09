@@ -1,6 +1,7 @@
 package com.itheima.reggie.web.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.itheima.reggie.utils.BaseContextUtil;
 import com.itheima.reggie.web.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -75,10 +76,19 @@ public class LoginCheckFilter implements Filter {
         Long employeeId = (Long) session.getAttribute("employee");
 
         if (employeeId != null) {
+            // 验证是否在同一个线程中
+            /*Thread thread = Thread.currentThread();
+            String name = thread.getName();
+            System.out.println("**********************************");
+            System.out.println("**********Filter-check:  " + requestURI + "----" + name);
+            */
+
+            //通过ThreadLocal对象，为当前线程绑定一个值.
+            // 因为所有请求都会过Filter，在这里设置好之后，
+            // 之后在dao/service/Controller等位置所有同一个线程中都可以获取并使用
+            BaseContextUtil.setCurrentId(employeeId);
+
             // 放行
-
-
-
             filterChain.doFilter(request, response);
             return; // 后面代码不需要执行，直接结束
         }

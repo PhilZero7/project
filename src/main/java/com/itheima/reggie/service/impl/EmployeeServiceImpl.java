@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itheima.reggie.entity.Employee;
 import com.itheima.reggie.mapper.EmployeeMapper;
+import com.itheima.reggie.utils.BaseContextUtil;
 import com.itheima.reggie.web.exception.BusinessException;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +32,6 @@ import java.time.LocalDateTime;
 public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> implements EmployeeService {
 
 
-    // TODO 临时放在这里，之后要优化掉
-    @Autowired
-    HttpServletRequest request;
-
     /**
      * 保存用户，并在保存前检查用户名是否存在
      * 不存在就补充数据：修改、创建人和时间，默认status、默认密码，后保存
@@ -44,10 +41,12 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
      */
     @Override
     public boolean saveWithCheckUserName(Employee employee) {
-        Thread thread = Thread.currentThread();
+
+        // 验证是否在同一个线程中
+        /*Thread thread = Thread.currentThread();
         String name = thread.getName();
         System.out.println("**********************************");
-        System.out.println("**********Service-savexx: name = " + name);
+        System.out.println("**********Service-savexx: name = " + name);*/
 
 
         /* 完整思路步骤如下：
@@ -87,7 +86,11 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         employee.setUpdateTime(LocalDateTime.now());
 
         // 2.3 获取当前登录用户的id，并填充进employee相应属性
-        Long employeeId = (Long) request.getSession().getAttribute("employee");
+        //Long employeeId = (Long) request.getSession().getAttribute("employee");
+
+        // 通过线程容器对象，获取绑定在该线程上的用户id
+        Long employeeId = BaseContextUtil.getCurrentId();
+        System.out.println("service employeeId = " + employeeId);
         employee.setCreateUser(employeeId);
         employee.setUpdateUser(employeeId);
 
