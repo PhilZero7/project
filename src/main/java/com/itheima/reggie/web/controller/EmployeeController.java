@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author Vsunks.v
@@ -110,6 +112,10 @@ public class EmployeeController {
      */
     @PostMapping
     public R save(@RequestBody Employee employee) {
+        Thread thread = Thread.currentThread();
+        String name = thread.getName();
+        System.out.println("**********************************");
+        System.out.println("**********Controller-save: name = " + name);
 
         // 3.保存员工
         boolean saveRsult = employeeService.saveWithCheckUserName(employee);
@@ -153,6 +159,23 @@ public class EmployeeController {
 
         employeeService.page(page, queryWrapper);
 
+        /*// 获取分页对象中所有员工，挨个请求密码，并重新封装到一个list集合中
+        List<Employee> employees = page.getRecords().stream().map((employee) -> {
+
+            // 清空密码
+            employee.setPassword(null);
+            return employee;
+        }).collect(Collectors.toList());
+
+        // 清空过密码的员工集合，设置会分页对象
+        page.setRecords(employees);*/
+
+        // 获取所有员工
+        List<Employee> employees = page.getRecords();
+        for (int i = 0; i < employees.size(); i++) {
+            employees.get(i).setPassword(null);
+        }
+
         // 3. 组织数据并响应给用户
         return R.success("查询成功", page);
     }
@@ -195,6 +218,9 @@ public class EmployeeController {
         if (id != null) {
 
             Employee employee = employeeService.getById(id);
+
+            // 清空密码
+            employee.setPassword(null);
 
             return R.success("查询成功", employee);
         }

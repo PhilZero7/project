@@ -44,6 +44,11 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
      */
     @Override
     public boolean saveWithCheckUserName(Employee employee) {
+        Thread thread = Thread.currentThread();
+        String name = thread.getName();
+        System.out.println("**********************************");
+        System.out.println("**********Service-savexx: name = " + name);
+
 
         /* 完整思路步骤如下：
         	1.判断用户名是否存在
