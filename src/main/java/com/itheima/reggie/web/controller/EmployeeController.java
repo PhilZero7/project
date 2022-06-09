@@ -187,4 +187,18 @@ public class EmployeeController {
         return R.fail("参数有误");
     }
 
+
+    @GetMapping("/{id}")
+    public R<Employee> getById(@PathVariable Long id) {
+        log.info("根据id查询，id为：{}", id);
+
+        if (id != null) {
+
+            Employee employee = employeeService.getById(id);
+
+            return R.success("查询成功", employee);
+        }
+        return R.fail("参数有误！");
+    }
+
 }
