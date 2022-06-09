@@ -13,4 +13,6 @@ import com.itheima.reggie.entity.Employee;
  *  结果：service层通用的增删改查不需要自己写了
  */
 public interface EmployeeService extends IService<Employee> {
+     // 保存用户，并在保存前检查用户名是否存在
+    boolean saveWithCheckUserName(Employee employee);
 }

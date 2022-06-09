@@ -112,23 +112,8 @@ public class EmployeeController {
     @PostMapping
     public R save(@RequestBody Employee employee) {
 
-        // 1. 对密码进行加密
-        String pwd = DigestUtils.md5DigestAsHex("123456".getBytes());
-        employee.setPassword(pwd);
-
-        // 2. 补全数据（推荐写在service层）
-        employee.setStatus(1);
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-
-        // 2.1 获取当前登录用户的id
-        Long employeeId = (Long) request.getSession().getAttribute("employee");
-        employee.setCreateUser(employeeId);
-        employee.setUpdateUser(employeeId);
-
-
         // 3.保存员工
-        boolean saveRsult = employeeService.save(employee);
+        boolean saveRsult = employeeService.saveWithCheckUserName(employee);
         if (saveRsult) {
             return R.success("新增员工成功");
         }
