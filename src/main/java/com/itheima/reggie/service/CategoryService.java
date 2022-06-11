@@ -10,4 +10,7 @@ import com.itheima.reggie.entity.Category;
  * Service类，继承Mybatis提供的IService类，泛型为实体类型。
  * 继承该接口，可以简化Service开发
  */
-public interface CategoryService extends IService<Category> {}
+public interface CategoryService extends IService<Category> {
+    // 保存，并在保存前检查分类名称
+    boolean saveWithNameCheck(Category category);
+}

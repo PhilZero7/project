@@ -22,7 +22,7 @@
         class="demo-ruleForm"
       >
         <el-form-item label="账号:" prop="username">
-          <el-input v-model="ruleForm.username" placeholder="请输入账号" maxlength="20"/>
+          <el-input v-model="ruleForm.username" placeholder="请输入账号" maxlength="20" :disabled="disabled"/>
         </el-form-item>
         <el-form-item
           label="员工姓名:"
@@ -104,6 +104,7 @@
         data() {
           return {
             id: '',
+            disabled: false,
             actionType : '',
             ruleForm : {
                 'name': '',
@@ -133,6 +134,7 @@
         created() {
           this.id = requestUrlParam('id')
           this.actionType = this.id ? 'edit' : 'add'
+          this.disabled = this.id ? true : false
           if (this.id) {
             this.init()
           }

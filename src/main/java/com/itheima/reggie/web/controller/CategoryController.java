@@ -31,7 +31,7 @@ public class CategoryController {
      * 保存分类
      * @param category 分类信息
      * @return
-     */
+     *//*
     @PostMapping
     public R add(@RequestBody Category category) {
 
@@ -44,7 +44,26 @@ public class CategoryController {
         }
         return R.fail("新增失败");
 
+    }*/
+
+/**
+ * 保存分类，并在保存前检查分类名称
+ *
+ * @param category 分类信息
+ * @return
+ */
+@PostMapping
+public R add(@RequestBody Category category) {
+
+    log.info("新增分类，信息：{}", category);
+
+    boolean saveRsult = categoryService.saveWithNameCheck(category);
+
+    if (saveRsult) {
+        return R.success("新增成功");
     }
+    return R.fail("新增失败");
+}
 
 
 }
