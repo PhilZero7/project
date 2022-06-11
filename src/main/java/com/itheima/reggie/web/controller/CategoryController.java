@@ -171,8 +171,10 @@ public class CategoryController {
 
 
     /**
-     * 根据分类类型查询分类
-     * @param type 分类类型，1 菜品，2 套餐
+     * 按照【类型/名称】条件查询所有的分类数据。
+     * 排序主要条件：sort升序
+     * 排序次要条件：updateTime 降序
+     * @param type 查询
      * @return
      */
     @GetMapping("list")
@@ -181,12 +183,19 @@ public class CategoryController {
 
         if (type != null) {
 
+            // 1. 条件构造器，设置分类类型
             LambdaQueryWrapper<Category> qw = new LambdaQueryWrapper<>();
-            qw.eq(Category::getType, type);
 
+            // 2. 条件构造器，设置主次排序条件
+            qw.eq(Category::getType, type)
+            .orderByAsc(Category::getSort)
+            .orderByDesc(Category::getUpdateTime);
+
+            // 3. 调用`service`方法查询
             List<Category> categories = categoryService.list(qw);
 
             if (categories != null && categories.size() > 0) {
+                // 4. 组装结果数据，响应
                 return R.success("查询分类成功", categories);
             }
             return R.fail("没有这种分类");
