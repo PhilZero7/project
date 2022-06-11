@@ -103,4 +103,25 @@ public class CategoryController {
         return R.success("查询成功", page);
     }
 
+
+    /**
+     * 按照id删除
+     *
+     * @param id
+     * @return
+     */
+    @DeleteMapping
+    public R deleteById(Long id) {
+        log.info("按照id删除，id为：{}", id);
+
+        // 删除
+        boolean deleteResut = categoryService.removeById(id);
+
+        if (deleteResut) {
+
+            return R.success("删除成功");
+        }
+        return R.fail("删除失败");
+
+    }
 }
