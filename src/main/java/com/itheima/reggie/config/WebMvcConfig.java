@@ -1,4 +1,4 @@
-package com.itheima.reggie.common;
+package com.itheima.reggie.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;

@@ -15,4 +15,5 @@ import com.itheima.reggie.entity.Employee;
 public interface EmployeeService extends IService<Employee> {
      // 保存用户，并在保存前检查用户名是否存在
     boolean saveWithCheckUserName(Employee employee);
+
 }

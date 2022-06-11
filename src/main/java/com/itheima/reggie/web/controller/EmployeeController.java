@@ -1,13 +1,10 @@
 package com.itheima.reggie.web.controller;
 
-import com.alibaba.druid.sql.visitor.functions.If;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itheima.reggie.entity.Employee;
 import com.itheima.reggie.entity.dto.LoginDto;
 import com.itheima.reggie.service.EmployeeService;
-import com.itheima.reggie.utils.BaseContextUtil;
 import com.itheima.reggie.web.R;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -16,9 +13,7 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @Author Vsunks.v
@@ -168,6 +163,7 @@ public class EmployeeController {
 
         // 2.1 设置查询条件：按照名称模糊查询
         queryWrapper.like(StringUtils.isNotBlank(name), Employee::getName, name);
+        queryWrapper.ne(Employee::getUsername,"admin" );
 
         employeeService.page(page, queryWrapper);
 
@@ -205,6 +201,13 @@ public class EmployeeController {
 
         //0. 请求参数健壮性判断
         if (employee.getId() != null) {
+
+            // admin禁止修改
+            if ("admin".equals(employee.getUsername())) {
+                return R.fail("你想干啥");
+            }
+
+
             // 状态修改参数合理性判断
             if (employee.getStatus() != null && (employee.getStatus() != 0 && employee.getStatus() != 1)) {
                 return R.fail("参数有误");
