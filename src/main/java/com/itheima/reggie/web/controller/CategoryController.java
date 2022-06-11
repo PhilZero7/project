@@ -146,4 +146,25 @@ public class CategoryController {
         return R.fail("删除失败");
 
     }
+
+
+    /**
+     * 修改，必须要携带id
+     * @param category
+     * @return
+     */
+    @PutMapping
+    public R update(@RequestBody Category category) {
+        log.info("分类编辑，新的数据：{}", category);
+        if (category.getId() != null) {
+
+            boolean updateResult = categoryService.updateById(category);
+
+            if (updateResult) {
+                return R.success("修改成功");
+            }
+            return R.fail("修改失败");
+        }
+        return R.fail("参数异常");
+    }
 }
