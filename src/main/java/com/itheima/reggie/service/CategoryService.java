@@ -13,4 +13,7 @@ import com.itheima.reggie.entity.Category;
 public interface CategoryService extends IService<Category> {
     // 保存，并在保存前检查分类名称
     boolean saveWithNameCheck(Category category);
+
+    // 删除分类，条件：该分类未被使用时
+    boolean removeByIdWithoutUsersd(Long id);
 }

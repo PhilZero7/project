@@ -110,12 +110,34 @@ public class CategoryController {
      * @param id
      * @return
      */
-    @DeleteMapping
+    /*@DeleteMapping
     public R deleteById(Long id) {
         log.info("按照id删除，id为：{}", id);
 
         // 删除
         boolean deleteResut = categoryService.removeById(id);
+
+        if (deleteResut) {
+
+            return R.success("删除成功");
+        }
+        return R.fail("删除失败");
+
+    }*/
+
+
+    /**
+     * 按照id删除
+     *
+     * @param id
+     * @return
+     */
+    @DeleteMapping
+    public R deleteById(Long id) {
+        log.info("按照id删除，id为：{}", id);
+
+        // 删除
+        boolean deleteResut = categoryService.removeByIdWithoutUsersd(id);
 
         if (deleteResut) {
 
