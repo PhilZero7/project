@@ -150,6 +150,7 @@ public class CategoryController {
 
     /**
      * 修改，必须要携带id
+     *
      * @param category
      * @return
      */
@@ -165,6 +166,32 @@ public class CategoryController {
             }
             return R.fail("修改失败");
         }
+        return R.fail("参数异常");
+    }
+
+
+    /**
+     * 根据分类类型查询分类
+     * @param type 分类类型，1 菜品，2 套餐
+     * @return
+     */
+    @GetMapping("list")
+    public R<List<Category>> listByType(Long type) {
+        log.info("查询分类，分类类型id：{}", type);
+
+        if (type != null) {
+
+            LambdaQueryWrapper<Category> qw = new LambdaQueryWrapper<>();
+            qw.eq(Category::getType, type);
+
+            List<Category> categories = categoryService.list(qw);
+
+            if (categories != null && categories.size() > 0) {
+                return R.success("查询分类成功", categories);
+            }
+            return R.fail("没有这种分类");
+        }
+
         return R.fail("参数异常");
     }
 }
