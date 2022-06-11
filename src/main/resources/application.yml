@@ -28,3 +28,7 @@ management:
     web:
       exposure:
         exclude: "*"
+
+
+reggie:
+  path: d:\img\
