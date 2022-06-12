@@ -77,6 +77,7 @@ public class DishController {
         boolean updateResult = dishService.updateWithFlavors(dishDto);
         if (updateResult) {
             System.out.println("aaaa");
+            System.out.println("aaaa");
             return R.success("修改菜品成功");
         }
         return R.fail("修改菜品失败");
