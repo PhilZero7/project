@@ -203,4 +203,29 @@ public class CategoryController {
 
         return R.fail("参数异常");
     }
+
+
+    /**
+     * 按照【类型/名称】条件查询所有的分类数据。
+     * 排序主要条件：sort升序
+     * 排序次要条件：updateTime 降序
+     * @param category 查询的条件
+     * @return
+     */
+
+    public R<List<Category>> listBytype(Category category){
+        //1. 条件构造器，设置分类类型
+        LambdaQueryWrapper<Category> qw = new LambdaQueryWrapper<>();
+        qw.eq(category.getType() != null, Category::getName,category.getName());
+          // 1.1 兼容按照名称模糊查询
+        qw.like(category.getName() != null, Category::getName, category.getName());
+        //2. 条件构造器，设置主次排序条件
+        qw.orderByAsc(Category::getSort).orderByDesc(Category::getUpdateTime);
+        //3. 调用`service`方法查询
+        List<Category> categories = categoryService.list(qw);
+        //4. 组装结果数据，响应
+        return R.success("查询分类成功", categories);
+
+    }
+
 }
